@@ -1,0 +1,10 @@
+{% extends base.html %}
+{% block title %}
+    picture page
+{% end %}
+{% block content %}
+    <h1>welcome to picture page</h1>
+    {% for path in img_list %}
+        <img src="{{ static_url(path) }}" alt="">
+    {% end %}
+{% end %}

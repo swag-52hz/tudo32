@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index page</title>
+    <style>
+        img{
+            width:200px;
+            height:200px;
+        }
+    </style>
+</head>
+<body>
+    <!--全局取消转义-->
+    {% autoescape None %}
+    {% if current_user %}
+    <h1>欢迎{{ current_user }}来到首页！！！</h1>
+    {% else %}
+    <h1>您还没有登录！</h1>
+    <!--{% raw link %} 取消转义-->
+    {{ link }}<br>
+    <!--{{ escape(link) }} # 局部转义-->
+    {# 模板注释 #}
+    <img src="static/images/admin.png" alt="">
+    <img src="{{ static_url('images/admin.png') }}" alt="">
+    {% end %}
+</body>
+</html>

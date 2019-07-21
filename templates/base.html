@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}base{% end %}</title>
+    <link rel="icon" href="{{ static_url("images/favicon.ico") }}">
+</head>
+<body>
+    <h1>{{ datetime.datetime.now() }}</h1>
+    {% block content %}
+
+    {% end %}
+</body>
+</html>
