@@ -1,0 +1,8 @@
+{% extends base.html %}
+{% block title %}
+    post page
+{% end %}
+{% block content %}
+    <h1>welcome to post page</h1>
+        <img src="{{ static_url('images/alert-{}.jpg'.format(post_id)) }}" alt="">
+{% end %}
