@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from models.db import Base
+from models.db import Base, Session
 
 
 class User(Base):
@@ -21,7 +21,7 @@ class Post(Base):
     image_url = Column(String(200))
     user_id = Column(Integer, ForeignKey('users.id'))
     # backref:使user对象有posts这个属性访问posts表
-    user = relationship('User', backref='posts', cascade='all')
+    user = relationship('User', backref='posts', uselist=False, cascade='all')
 
     def __repr__(self):
         return '<Post: {}>'.format(self.id)
