@@ -23,9 +23,8 @@ from os.path import dirname, abspath
 
 
 root = dirname(dirname(abspath(__file__)))
-print(root)
+# print(root)
 sys.path.append(root)
-
 
 from models.auth import Base
 
