@@ -1,0 +1,22 @@
+{% extends base.html %}
+{% block title %}
+    login
+{% end %}
+{% block content %}
+{% if msg %}
+    {{ msg }}
+{% end %}
+{% if current_user %}
+    <div class="alert alert-info" role="alert">
+        欢迎<a href="">{{ current_user }}</a>登录！！！
+    </div>
+{% else %}
+<form action="/login" enctype="multipart/form-data" method="post">
+    {% module xsrf_form_html() %}
+    用户名：<input type="text" name="name"><br>
+    密码：<input type="password" name="password"><br>
+    <input type="hidden" name="next_url" value="{{ next_url }}">
+    <input type="submit">
+</form>
+{% end %}
+{% end %}

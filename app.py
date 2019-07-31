@@ -15,6 +15,8 @@ class Application(tornado.web.Application):
             (r"/pic", main.ExploreHandler),
             (r"/post/(?P<post_id>[0-9]+)", main.PostHandler),
             (r"/signup", auth.RegisterHandler),
+            (r"/login", auth.LoginHandler),
+            (r"/logout", auth.LogoutHandler),
         ]
         settings = dict(
             debug=True,
@@ -23,7 +25,7 @@ class Application(tornado.web.Application):
             # static_url_prefix = "/photo/"    修改静态目录名称
             cookie_secret = "jsahcaskljcasoicjasxklasmc",
             xsrf_cookies = True,
-            login_url = "/submit",
+            login_url = "/login",
             pycket = {
                 'engine': 'redis',
                 'storage':{

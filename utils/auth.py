@@ -31,3 +31,18 @@ def register(username, password, password_repeat):
         msg = 'username or password is empty'
     ret['msg'] = msg
     return ret
+
+
+def authenticate(username, password):
+    ret = {}
+    if username and password:
+        result = User.is_exists(username, hash(password))
+        if result:
+            ret['msg'] = 'ok'
+        else:
+            ret['msg'] = 'username or password error'
+    else:
+        ret['msg'] = 'username or password is empty'
+    return ret
+
+

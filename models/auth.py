@@ -1,6 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import exists, and_
 from models.db import Base, Session
 
 
@@ -14,6 +15,15 @@ class User(Base):
 
     def __repr__(self):
         return '<User: {}-{}>'.format(self.id, self.name)
+
+    @classmethod
+    def is_exists(cls, username, password):
+        session = Session()
+        ret = session.query(exists().where(and_(User.name==username,
+                                          User.password==password))).scalar()
+        session.close()
+        return ret
+
 
 class Post(Base):
     __tablename__ = 'posts'
