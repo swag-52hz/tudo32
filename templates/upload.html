@@ -1,0 +1,11 @@
+{% extends base.html %}
+{% block title %}
+    upload
+{% end %}
+{% block content %}
+<form action="/upload" enctype="multipart/form-data" method="post">
+    {% module xsrf_form_html() %}
+    请选择文件：<input type="file" name="picture"><br>
+    <input type="submit">
+</form>
+{% end %}

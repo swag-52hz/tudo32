@@ -1,47 +1,30 @@
 {% extends base.html %}
 {% block title %}
-    index page
+index page
 {% end %}
 {% block link %}
-    <style>
-        .carousel-item img{
-            height: 400px;
-        }
-        .logout-box{
-            z-index: 5;
-            position: absolute;
-            top: 48px;
-            left: 50px;
-            width: 140px;
-            height: 50px;
-            text-align: center;
-            line-height: 50px;
-            background-color: #ccc;
-        }
-        .user-box span a:hover{
-            text-decoration: none;
-            color: orange;
-        }
-    </style>
-{% end %}
-{% block user %}
-    {% if current_user %}
-        <span><a href="">{{ current_user }}</a></span>
-        <div class="logout-box">
-            <a href="/logout">退出登录</a>
-        </div>
-    {% else %}
-        <span><a href="/login">登录</a>/<a href="/signup">注册</a></span>
-    {% end %}
+<style>
+    .carousel-item img {
+        height: 400px;
+    }
+    .display-list li{
+        float: left;
+        margin-right: 10px;
+    }
+    .display-list li img{
+        width: 400px;
+        height: 400px;
+    }
+</style>
 {% end %}
 {% block content %}
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-         点我启动
-    </button>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    点我启动
+</button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -61,4 +44,9 @@
         </div>
     </div>
 </div>
+<ul class="display-list">
+    {% for post in posts %}
+        <li><img src="{{ static_url(post.image_url) }}" alt=""></li>
+    {% end %}
+</ul>
 {% end %}

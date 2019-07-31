@@ -1,5 +1,5 @@
 from hashlib import md5
-from models.auth import User, Session
+from models.auth import User, Post, Session
 
 
 SALT = "tudopass"
@@ -45,4 +45,26 @@ def authenticate(username, password):
         ret['msg'] = 'username or password is empty'
     return ret
 
+def add_post(image_url, username):
+    session = Session()
+    print(username)
+    user = session.query(User).filter(User.name==username).first()
+    post = Post(image_url=image_url, user_id=user.id)
+    session.add(post)
+    session.commit()
+    post_id = post.id
+    session.close()
+    return post_id
 
+def get_post(post_id):
+    session = Session()
+    post = session.query(Post).filter(Post.id==post_id).first()
+    return post
+
+def get_all_posts():
+    session = Session()
+    posts = session.query(Post).all()
+    if posts:
+        return posts
+    else:
+        return []

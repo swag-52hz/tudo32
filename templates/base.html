@@ -21,6 +21,21 @@
         .user-box img:hover{
             border: 2px solid orange;
         }
+        .logout-box {
+            z-index: 5;
+            position: absolute;
+            top: 48px;
+            left: 50px;
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            background-color: #ccc;
+        }
+        .user-box span a:hover {
+            text-decoration: none;
+            color: orange;
+        }
     </style>
 </head>
 <body>
@@ -46,7 +61,7 @@
                             上传
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">照片</a>
+                            <a class="dropdown-item" href="/upload">照片</a>
                             <a class="dropdown-item" href="#">视频</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">其它</a>
@@ -62,7 +77,13 @@
                 </form>
                 <div class="user-box">
                     <img src="{{ static_url('images/admin.png') }}" alt="..." class="rounded-circle">
-                    {% block user %}
+                    {% if current_user %}
+                        <span><a href="">{{ current_user }}</a></span>
+                        <div class="logout-box">
+                            <a href="/logout">退出登录</a>
+                        </div>
+                        {% else %}
+                        <span><a href="/login">登录</a>/<a href="/signup">注册</a></span>
                     {% end %}
                 </div>
             </div>
