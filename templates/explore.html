@@ -4,7 +4,7 @@
 {% end %}
 {% block content %}
     <h1>welcome to picture page</h1>
-    {% for path in img_list %}
-        <img src="{{ static_url(path) }}" alt="">
+    {% for post in posts %}
+        <img src="{{ static_url(post.image_url) }}" alt="">
     {% end %}
 {% end %}

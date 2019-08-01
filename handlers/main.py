@@ -1,7 +1,9 @@
 import tornado.web
+import os
 from PIL import Image
 from pycket.session import SessionMixin
 from utils.auth import add_post, get_post, get_all_posts
+from utils.photo import UploadImage
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
@@ -16,7 +18,8 @@ class IndexHandler(BaseHandler):
 
 class ExploreHandler(BaseHandler):
     def get(self):
-        return self.render("explore.html", img_list=[])
+        posts = get_all_posts()
+        return self.render("explore.html", posts=posts)
 
 class PostHandler(BaseHandler):
     def get(self, post_id):
@@ -32,15 +35,14 @@ class UploadHandler(BaseHandler):
 
     def post(self):
         file_list = self.request.files.get("picture")
-        file_dict = file_list[0]
-        file_name = file_dict["filename"]
-        img_path = 'static/images/{}'.format(file_name)
-        with open(img_path, 'wb') as f:
-            f.write(file_dict["body"])
-        img = Image.open(img_path)
-        img.thumbnail((200, 200))   # 生成缩略图
-        img.save('static/images/thumb_{}'.format(file_name))
-        post_id = add_post('images/{}'.format(file_name), self.current_user)
+        post_id = None
+        for file_dict in file_list:
+            file_name = file_dict["filename"]
+            _, ext_name = os.path.splitext(file_name)
+            upload_img = UploadImage(ext_name, self.application.settings['static_path'])
+            upload_img.save_content(file_dict["body"])
+            upload_img.save_thumb_img()
+            post_id = add_post(upload_img.get_image_path, self.current_user)
         if post_id:
             self.redirect('/post/{}'.format(str(post_id)))
         else:

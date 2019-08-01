@@ -4,7 +4,9 @@
 {% end %}
 {% block content %}
 {% if msg %}
-    {{ msg }}
+    <div class="alert alert-danger" role="alert">
+            {{ msg }}
+    </div>
 {% end %}
 {% if current_user %}
     <div class="alert alert-info" role="alert">
