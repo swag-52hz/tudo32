@@ -45,11 +45,11 @@ def authenticate(username, password):
         ret['msg'] = 'username or password is empty'
     return ret
 
-def add_post(image_url, username):
+def add_post(username, image_url, thumb_url):
     session = Session()
     print(username)
     user = session.query(User).filter(User.name==username).first()
-    post = Post(image_url=image_url, user_id=user.id)
+    post = Post(image_url=image_url, thumb_url=thumb_url, user_id=user.id)
     session.add(post)
     session.commit()
     post_id = post.id
@@ -61,9 +61,13 @@ def get_post(post_id):
     post = session.query(Post).filter(Post.id==post_id).first()
     return post
 
-def get_all_posts():
+def get_all_posts(username=None):
     session = Session()
-    posts = session.query(Post).all()
+    if username:
+        user = session.query(User).filter_by(name=username).first()
+        posts = session.query(Post).filter_by(user=user).all()
+    else:
+        posts = session.query(Post).all()
     if posts:
         return posts
     else:

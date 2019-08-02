@@ -8,11 +8,15 @@
             width: 500px;
             height: 400px
         }
+        .user{
+            color: orange;
+        }
     </style>
 {% end %}
 {% block content %}
     <div class="display-box">
         <h1>welcome to post page</h1>
         <img src="{{ static_url(post.image_url) }}" alt="">
+        <p class="user">upload by {{ post.user.name }}</p>
     </div>
 {% end %}

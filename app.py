@@ -2,6 +2,7 @@ import tornado.web
 import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
+from tornado.web import URLSpec
 
 from handlers import main, auth
 
@@ -12,8 +13,9 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", main.IndexHandler),
+            (r"/myself", main.MyselfHandler),
             (r"/pic", main.ExploreHandler),
-            (r"/post/(?P<post_id>[0-9]+)", main.PostHandler),
+            URLSpec(r"/post/(?P<post_id>[0-9]+)", main.PostHandler, name='post'),
             (r"/signup", auth.RegisterHandler),
             (r"/login", auth.LoginHandler),
             (r"/logout", auth.LogoutHandler),

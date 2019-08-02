@@ -29,6 +29,7 @@ class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True, autoincrement=True)
     image_url = Column(String(200))
+    thumb_url = Column(String(200))
     user_id = Column(Integer, ForeignKey('users.id'))
     # backref:使user对象有posts这个属性访问posts表
     user = relationship('User', backref='posts', uselist=False, cascade='all')

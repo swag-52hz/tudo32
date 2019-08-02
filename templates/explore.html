@@ -1,10 +1,14 @@
 {% extends base.html %}
 {% block title %}
-    picture page
+    explore page
 {% end %}
 {% block content %}
     <h1>welcome to picture page</h1>
     {% for post in posts %}
-        <img src="{{ static_url(post.image_url) }}" alt="">
+        {% if post.thumb_url %}
+            <img src="{{ static_url(post.thumb_url) }}" alt="">
+        {% else %}
+            <p>这个图没有缩略图哦！！！</p>
+        {% end %}
     {% end %}
 {% end %}
