@@ -2,10 +2,47 @@
 {% block title %}
     upload
 {% end %}
+{% block link %}
+<style>
+    .upload-form{
+        width:300px;
+        margin:0 auto;
+        background-color: rgb(0, 43, 54);
+    }
+
+    .file-box {
+        display: block;
+        position: relative;
+        padding: 3px 5px;
+        overflow: hidden;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 15px;
+        background-color: orange;
+        border-radius: 10px;
+    }
+    .file-btn {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        outline: none;
+        background-color: transparent;
+        filter: alpha(opacity=0);
+        -moz-opacity: 0;
+        -khtml-opacity: 0;
+        opacity: 0;
+    }
+</style>
+{% end %}
 {% block content %}
-<form action="/upload" enctype="multipart/form-data" method="post">
+<form class="upload-form" action="/upload" enctype="multipart/form-data" method="post">
     {% module xsrf_form_html() %}
-    请选择文件：<input type="file" name="picture"><br>
-    <input type="submit">
+    <div class="file-box">
+			<input type="file" class="file-btn" name="picture">
+			选择图片
+    </div>
+    <input class="btn btn-primary btn-block" type="submit" value="上传">
 </form>
 {% end %}

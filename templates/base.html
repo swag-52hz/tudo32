@@ -6,9 +6,13 @@
     <title>{% block title %}base{% end %}</title>
     <link rel="icon" href="{{ static_url("images/favicon.ico") }}">
     <link rel="stylesheet" href="{{ static_url('css/bootstrap.css') }}">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     {% block link %}
     {% end %}
     <style>
+        body{
+            background-color: rgb(0, 43, 54);
+        }
         .user-box{
             position: relative;
         }
@@ -41,7 +45,7 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Instagram</a>
+            <a class="navbar-brand" href="/"><i class="fa fa-camera-retro fa-lg" style="color: blue;"></i> Instagram</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -53,16 +57,17 @@
                         <a class="nav-link" href="/">首页<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/pic">发现</a>
+                        <a class="nav-link" href="/pic"><i class="fa fa-eye" aria-hidden="true"></i> 发现</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-upload" aria-hidden="true"></i>
                             上传
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/upload">照片</a>
-                            <a class="dropdown-item" href="#">视频</a>
+                            <a class="dropdown-item" href="/upload"><i class="fa fa-picture-o" aria-hidden="true"></i> 照片</a>
+                            <a class="dropdown-item" href="#"><i class="fa fa-file-video-o" aria-hidden="true"></i> 视频</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">其它</a>
                         </div>
