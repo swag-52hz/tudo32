@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% extends base.html %}
+{% block title %}
+    chat_room page
+{% end %}
+{% block link %}
+<style>
+    #inbox{
+        color: orange;
+    }
+</style>
+{% end %}
+{% block content %}
+    <div id="inbox"></div>
+    <div id="input">
+        <form action="#" method="post" id="messageform">
+            <table>
+                <tr>
+                    <td>
+                        <input name="body" id="message" type="text" style="width: 500px">
+                    </td>
+                    <td style="padding-left: 5px;">
+                        <input type="submit" value="发送">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% end %}
+{% block script %}
+    <script src="{{ static_url('js/chat.js') }}"></script>
+{% end %}

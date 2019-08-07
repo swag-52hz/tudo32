@@ -59,6 +59,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/pic"><i class="fa fa-eye" aria-hidden="true"></i> 发现</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/room"><i class="fa fa-weixin" aria-hidden="true"></i> 聊天</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -103,7 +106,9 @@
         {% end %}
     </div>
     <script src="{{ static_url('js/jquery.min.js') }}"></script>
-    <script src="{{ static_url('js/popper.min.js') }}"></script>
+{#    <script src="{{ static_url('js/popper.min.js') }}"></script>#}
     <script src="{{ static_url('js/bootstrap.js') }}"></script>
+    {% block script %}
+    {% end %}
 </body>
 </html>

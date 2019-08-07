@@ -4,7 +4,7 @@ import tornado.options
 from tornado.options import define, options
 from tornado.web import URLSpec
 
-from handlers import main, auth
+from handlers import main, auth, chat
 
 define('port', default="8000", help="Listening Port", type=int)
 
@@ -20,6 +20,8 @@ class Application(tornado.web.Application):
             (r"/login", auth.LoginHandler),
             (r"/logout", auth.LogoutHandler),
             (r"/upload", main.UploadHandler),
+            (r"/ws", chat.ChatWSHandler),
+            (r"/room", chat.ChatRoomHandler),
         ]
         settings = dict(
             debug=True,
@@ -27,7 +29,7 @@ class Application(tornado.web.Application):
             template_path = "templates",
             # static_url_prefix = "/photo/"    修改静态目录名称
             cookie_secret = "jsahcaskljcasoicjasxklasmc",
-            xsrf_cookies = True,
+            # xsrf_cookies = True,  开启xsrf验证
             login_url = "/login",
             pycket = {
                 'engine': 'redis',
