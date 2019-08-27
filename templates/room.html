@@ -11,7 +11,11 @@
 </style>
 {% end %}
 {% block content %}
-    <div id="inbox"></div>
+    <div id="inbox">
+        {% for html in history %}
+        {% raw html %}
+        {% end %}
+    </div>
     <div id="input">
         <form action="#" method="post" id="messageform">
             <table>

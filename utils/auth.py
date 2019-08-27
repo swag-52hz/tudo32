@@ -59,6 +59,7 @@ def add_post(username, image_url, thumb_url):
 def get_post(post_id):
     session = Session()
     post = session.query(Post).filter(Post.id==post_id).first()
+    print(post.user)
     return post
 
 def get_all_posts(username=None):

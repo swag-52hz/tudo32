@@ -1,0 +1,4 @@
+<div class="message" id="m{{ chat['id'] }}">
+    <span class="badge badge-primary">{{ chat['username'] }}@{{
+            chat['created'] }}</span>:{% module linkify(chat['body']) %}
+</div>

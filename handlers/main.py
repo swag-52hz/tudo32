@@ -1,6 +1,5 @@
 import tornado.web
 import os
-from PIL import Image
 from pycket.session import SessionMixin
 from utils.auth import add_post, get_post, get_all_posts
 from utils.photo import UploadImage

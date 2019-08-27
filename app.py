@@ -4,7 +4,7 @@ import tornado.options
 from tornado.options import define, options
 from tornado.web import URLSpec
 
-from handlers import main, auth, chat
+from handlers import main, auth, chat, service
 
 define('port', default="8000", help="Listening Port", type=int)
 
@@ -22,6 +22,8 @@ class Application(tornado.web.Application):
             (r"/upload", main.UploadHandler),
             (r"/ws", chat.ChatWSHandler),
             (r"/room", chat.ChatRoomHandler),
+            (r"/sync", service.SyncHandler),
+            (r"/save", service.AsyncHandler),
         ]
         settings = dict(
             debug=True,
