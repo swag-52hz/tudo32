@@ -5,7 +5,6 @@ from tornado.gen import coroutine, sleep
 from tornado.httpclient import AsyncHTTPClient
 from .main import BaseHandler
 from .chat import ChatWSHandler, make_data
-from utils.auth import add_post
 from utils.photo import UploadImage
 
 
@@ -21,7 +20,7 @@ class SyncHandler(BaseHandler):
         upload_img = UploadImage('.jpg', self.application.settings['static_path'])
         upload_img.save_content(resp.content)
         upload_img.save_thumb_img()
-        post_id = add_post(self.current_user, upload_img.get_image_path, upload_img.get_thumb_url)
+        post_id = self.orm.add_post(self.current_user, upload_img.get_image_path, upload_img.get_thumb_url)
         if post_id:
             self.redirect('/post/{}'.format(str(post_id)))
         else:
@@ -40,7 +39,7 @@ class AsyncHandler(BaseHandler):
             upload_img = UploadImage('.jpg', self.application.settings['static_path'])
             upload_img.save_content(content)
             upload_img.save_thumb_img()
-            post_id = add_post(username, upload_img.get_image_path, upload_img.get_thumb_url)
+            post_id = self.orm.add_post(username, upload_img.get_image_path, upload_img.get_thumb_url)
             if post_id:
                 chat = make_data(self, '{} save to http://127.0.0.1:8000/post/{} by {}'.format(save_url, post_id, username), 'admin')
                 ChatWSHandler.update_history(chat['html'])

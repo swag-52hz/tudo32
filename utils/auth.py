@@ -46,38 +46,6 @@ def authenticate(username, password):
     return ret
 
 
-def add_post(username, image_url, thumb_url):
-    session = Session()
-    print(username)
-    user = session.query(User).filter(User.name == username).first()
-    post = Post(image_url=image_url, thumb_url=thumb_url, user_id=user.id)
-    session.add(post)
-    session.commit()
-    post_id = post.id
-    session.close()
-    return post_id
-
-
-def get_post(post_id):
-    session = Session()
-    post = session.query(Post).filter(Post.id == post_id).first()
-    print(post.user)
-    return post
-
-
-def get_all_posts(username=None):
-    session = Session()
-    if username:
-        user = session.query(User).filter_by(name=username).first()
-        posts = session.query(Post).filter_by(user=user).all()
-    else:
-        posts = session.query(Post).all()
-    if posts:
-        return posts
-    else:
-        return []
-
-
 class HandlerORM:
     """在RequestHandler实例化查询的Session,然后配合使用来操作数据库"""
     def __init__(self, db_session):

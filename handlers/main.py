@@ -1,7 +1,7 @@
 import tornado.web
 import os
 from pycket.session import SessionMixin
-from utils.auth import add_post, get_post, get_all_posts, HandlerORM
+from utils.auth import HandlerORM
 from models.auth import Session
 from utils.photo import UploadImage
 
