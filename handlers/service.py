@@ -9,7 +9,7 @@ from utils.auth import add_post
 from utils.photo import UploadImage
 
 
-logger = logging.getLogger('tudo.log')
+logger = logging.getLogger('super.log')
 
 
 class SyncHandler(BaseHandler):

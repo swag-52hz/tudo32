@@ -8,7 +8,7 @@ from tornado.httpclient import AsyncHTTPClient
 from datetime import datetime
 from .main import BaseHandler
 
-logger = logging.getLogger('tudo.log')
+logger = logging.getLogger('super.log')
 
 
 def make_data(handler, body, username):
