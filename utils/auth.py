@@ -45,10 +45,11 @@ def authenticate(username, password):
         ret['msg'] = 'username or password is empty'
     return ret
 
+
 def add_post(username, image_url, thumb_url):
     session = Session()
     print(username)
-    user = session.query(User).filter(User.name==username).first()
+    user = session.query(User).filter(User.name == username).first()
     post = Post(image_url=image_url, thumb_url=thumb_url, user_id=user.id)
     session.add(post)
     session.commit()
@@ -56,11 +57,13 @@ def add_post(username, image_url, thumb_url):
     session.close()
     return post_id
 
+
 def get_post(post_id):
     session = Session()
-    post = session.query(Post).filter(Post.id==post_id).first()
+    post = session.query(Post).filter(Post.id == post_id).first()
     print(post.user)
     return post
+
 
 def get_all_posts(username=None):
     session = Session()
@@ -73,3 +76,50 @@ def get_all_posts(username=None):
         return posts
     else:
         return []
+
+
+class HandlerORM:
+    """在RequestHandler实例化查询的Session,然后配合使用来操作数据库"""
+    def __init__(self, db_session):
+        self.db = db_session
+
+    def get_user(self, username):
+        user = self.db.query(User).filter(User.name == username).first()
+        if user:
+            return user
+        else:
+            return None
+
+    def get_post(self, post_id):
+        """
+        返回指定id的图片
+        :param post_id: 图片id
+        :return:
+        """
+        post = self.db.query(Post).filter(Post.id == post_id).first()
+        print(post.user)
+        return post
+
+    def get_all_posts(self, username=None):
+        """
+        查询获取所有照片或者是特定用户的照片
+        :param username:如果没有，就是获取全部照片
+        :return:
+        """
+        if username:
+            user = self.get_user(username)
+            posts = self.db.query(Post).filter_by(user=user).all()
+        else:
+            posts = self.db.query(Post).all()
+        if posts:
+            return posts
+        else:
+            return []
+
+    def add_post(self, username, image_url, thumb_url):
+        user = self.get_user(username)
+        post = Post(image_url=image_url, thumb_url=thumb_url, user_id=user.id)
+        self.db.add(post)
+        self.db.commit()
+        post_id = post.id
+        return post_id
