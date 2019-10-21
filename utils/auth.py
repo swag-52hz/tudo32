@@ -1,5 +1,6 @@
 from hashlib import md5
-from models.auth import User, Post, Session
+from models.auth import User, Post, Session, LikePost
+from sqlalchemy.sql import and_, exists
 
 
 SALT = "tudopass"
@@ -65,7 +66,6 @@ class HandlerORM:
         :return:
         """
         post = self.db.query(Post).filter(Post.id == post_id).first()
-        print(post.user)
         return post
 
     def get_all_posts(self, username=None):
@@ -91,3 +91,32 @@ class HandlerORM:
         self.db.commit()
         post_id = post.id
         return post_id
+
+    def get_like_post(self, username):
+        """
+        获取用户喜欢的图片列表
+        :param username: 根据用户名进行查找
+        :return:
+        """
+        user = self.get_user(username)
+        like_posts = self.db.query(Post).filter(Post.id == LikePost.post_id,
+                                       LikePost.user_id == user.id).all()
+        return like_posts
+
+    def get_like_count(self, post_id):
+        count = self.db.query(LikePost).filter_by(post_id=post_id).count()
+        return count
+
+    def add_or_cut_like(self, user_id, post_id, is_like):
+        like_post = LikePost(user_id=user_id, post_id=post_id)
+        if is_like == "true":
+            self.db.query(LikePost).filter(LikePost.user_id == user_id, LikePost.post_id == post_id).delete()
+        else:
+            self.db.add(like_post)
+        self.db.commit()
+
+    def post_is_like(self, username, post_id):
+        user = self.get_user(username)
+        res = self.db.query(exists().where(and_(LikePost.user_id == user.id,
+                                                LikePost.post_id == post_id))).scalar()
+        return res

@@ -21,14 +21,22 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
 class IndexHandler(BaseHandler):
     def get(self):
         posts = self.orm.get_all_posts()
-        return self.render("index.html", posts=posts)
+        count_list = [self.orm.get_like_count(post.id) for post in posts]
+        like_list = [self.orm.post_is_like(self.current_user, post.id) for post in posts]
+        return self.render("index.html", posts=posts,
+                           count_list=count_list,
+                           like_list=like_list)
 
 
 class MyselfHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         posts = self.orm.get_all_posts(self.current_user)
-        return self.render("index.html", posts=posts)
+        count_list = [self.orm.get_like_count(post.id) for post in posts]
+        like_list = [self.orm.post_is_like(self.current_user, post.id) for post in posts]
+        self.render("index.html", posts=posts,
+                    like_list=like_list,
+                    count_list=count_list)
 
 
 class ExploreHandler(BaseHandler):
@@ -41,9 +49,11 @@ class PostHandler(BaseHandler):
     def get(self, post_id):
         post = self.orm.get_post(int(post_id))
         if post:
-            return self.render("post.html", post=post)
+            count = self.orm.get_like_count(post.id)
+            like = self.orm.post_is_like(self.current_user, post.id)
+            self.render("post.html", post=post, count=count, like=like)
         else:
-            return self.send_error(404)
+            self.render("404notfound.html")
 
 
 class UploadHandler(BaseHandler):
@@ -65,3 +75,30 @@ class UploadHandler(BaseHandler):
             self.redirect('/post/{}'.format(str(post_id)))
         else:
             self.write('upload error')
+
+
+class ProfileHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        query_name = self.get_argument('name', '')
+        if query_name:
+            name = query_name
+        else:
+            name = self.current_user
+        user = self.orm.get_user(name)
+        posts = self.orm.get_all_posts(name)
+        like_posts = self.orm.get_like_post(name)
+        self.render('profile.html', user=user, posts=posts, like_posts=like_posts)
+
+
+class AddLikeHandler(BaseHandler):
+    def post(self):
+        post_id = self.get_argument("post_id", '')
+        is_like = self.get_argument("is_like", '')
+        user = self.orm.get_user(self.current_user)
+        self.orm.add_or_cut_like(user_id=user.id, post_id=int(post_id), is_like=is_like)
+        like_count = self.orm.get_like_count(int(post_id))
+        self.write({
+            'id': post_id,
+            'count': like_count
+        })

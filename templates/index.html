@@ -7,21 +7,47 @@ index page
     .carousel-item img {
         height: 400px;
     }
+    .display-list{
+        list-style: none;
+    }
     .display-list li{
         float: left;
         margin-right: 10px;
         margin-bottom: 10px;
+        font-size: 16px;
+        color: orange;
     }
     .display-list li img{
-        width: 300px;
-        height: 250px;
+        width: 250px;
+        height: 200px;
     }
+    .display-list li > a{
+        display: block;
+    }
+    {#.display-list li p a{#}
+    {#    color: #bd2130;#}
+    {#}#}
 </style>
 {% end %}
 {% block content %}
 <ul class="display-list">
+    {% set num=0 %}
     {% for post in posts %}
-        <li><a href="{{ reverse_url('post', post.id) }}"><img src="{{ static_url(post.image_url) }}" alt=""></a></li>
+        <li>
+            <a href="{{ reverse_url('post', post.id) }}"><img src="{{ static_url(post.image_url) }}" alt=""></a>
+            <p>
+                upload by <a href="/profile?name={{ post.user.name }}">{{ post.user.name }}</a>
+
+                <span class="like-button text-secondary {% if like_list[num] %}text-danger{% end %}">
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                </span>
+                <span class="like-count">
+                    {{ count_list[num] }}
+                </span>
+            </p>
+
+        </li>
+        {% set num = num + 1 %}
     {% end %}
 </ul>
 {% end %}

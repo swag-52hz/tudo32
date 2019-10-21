@@ -1,0 +1,31 @@
+{% extends base.html %}
+{% block title %}
+    profile page
+{% end %}
+{% block link %}
+<style>
+    p{
+        color: orange;
+        font-size: 25px;
+    }
+</style>
+{% end %}
+{% block content %}
+    <p>用户名：{{ user.name }} ID：{{ user.id }}</p>
+    <p>喜欢的图片：</p>
+    <div class="like-box">
+        {% for post in like_posts %}
+        <a href="/post/{{ post.id }}" target="_blank">
+            <img src="{{ static_url(post.image_url) }}" alt="" class="img-fluid">
+        </a>
+        {% end %}
+    </div>
+    <p>上传的图片</p>
+    <div class="upload-box">
+        {% for post in posts %}
+        <a href="/post/{{ post.id }}" target="_blank">
+            <img src="{{ static_url(post.image_url) }}" alt="" class="img-fluid">
+        </a>
+        {% end %}
+    </div>
+{% end %}

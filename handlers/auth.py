@@ -41,7 +41,7 @@ class LoginHandler(BaseHandler):
 class LogoutHandler(BaseHandler):
     def get(self):
         self.session.delete('tudo_cookie')
-        self.redirect('/')
+        self.redirect('/login')
 
 
 

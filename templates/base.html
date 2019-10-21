@@ -72,11 +72,11 @@
                             <a class="dropdown-item" href="/upload"><i class="fa fa-picture-o" aria-hidden="true"></i> 照片</a>
                             <a class="dropdown-item" href="#"><i class="fa fa-file-video-o" aria-hidden="true"></i> 视频</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">其它</a>
+                            <a class="dropdown-item" href="/myself">我的上传</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/myself">我的上传</a>
+                        <a class="nav-link" href="/profile">我的喜爱</a>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -86,7 +86,7 @@
                 <div class="user-box">
                     <img src="{{ static_url('images/admin.png') }}" alt="..." class="rounded-circle">
                     {% if current_user %}
-                        <span><a href="">{{ current_user }}</a></span>
+                        <span><a href="/profile?name={{ current_user }}">{{ current_user }}</a></span>
                         <div class="logout-box">
                             <a href="/logout">退出登录</a>
                         </div>

@@ -12,6 +12,44 @@
 {% block content %}
     <div class="display-box">
         <img src="{{ static_url(post.image_url) }}" alt="" class="img-fluid">
-        <p class="user">upload by {{ post.user.name }}</p>
+        <p class="user">upload by <a href="/profile?name={{ post.user.name }}">{{ post.user.name }}</a>
+            <span style="cursor: pointer;" id="like-button" class="text-secondary {% if like %}text-danger{% end %}">
+                <i class="fa fa-heart"></i>
+            </span>
+            <span id="like-count">
+                {% if count %}{{ count }}{% end %}
+            </span>
+        </p>
     </div>
+{% end %}
+{% block script %}
+    <script>
+    var $btn = $('#like-button');
+    {% if like %}
+    var $like = true;
+    {% else %}
+    var $like = false;
+    {% end %}
+    $btn.click(
+        function addLike() {
+        $.ajax(
+            {
+                "type": "post",
+                "url": '/like',
+                "data": {"post_id": {{ post.id }}, "is_like": $like},
+                "success": function (data) {
+                    {% if not like %}
+                    $btn.toggleClass('text-danger', true);
+                    {% else %}
+                    $btn.toggleClass('text-secondary', true);
+                    {% end %}
+                    $('#like-count').html(data.count);
+                    window.location.reload();
+                }
+            }
+        )
+    }
+    )
+
+</script>
 {% end %}
