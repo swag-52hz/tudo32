@@ -20,10 +20,18 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
 
 class IndexHandler(BaseHandler):
     def get(self):
+        page_num = int(self.get_argument('page', '1'))
+        page_size = int(self.get_argument('page_size', '8'))
         posts = self.orm.get_all_posts()
+        pg = self.orm.get_pg(page_num, page_size)
+        page_list = self.orm.get_page_list(page_num, page_size)
         count_list = [self.orm.get_like_count(post.id) for post in posts]
         like_list = [self.orm.post_is_like(self.current_user, post.id) for post in posts]
-        return self.render("index.html", posts=posts,
+        return self.render("index.html", posts=pg.items,
+                           pg=pg,
+                           page_num=page_num,
+                           page_list=page_list,
+                           page_size=page_size,
                            count_list=count_list,
                            like_list=like_list)
 

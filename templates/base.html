@@ -7,6 +7,7 @@
     <link rel="icon" href="{{ static_url("images/favicon.ico") }}">
     <link rel="stylesheet" href="{{ static_url('css/bootstrap.css') }}">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1469447_q5pybod6vcs.css">
     {% block link %}
     {% end %}
     <style>
@@ -106,7 +107,7 @@
         {% end %}
     </div>
     <script src="{{ static_url('js/jquery.min.js') }}"></script>
-{#    <script src="{{ static_url('js/popper.min.js') }}"></script>#}
+    <script src="{{ static_url('js/popper.min.js') }}" type="module"></script>
     <script src="{{ static_url('js/bootstrap.js') }}"></script>
     {% block script %}
     {% end %}

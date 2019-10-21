@@ -9,9 +9,17 @@ index page
     }
     .display-list{
         list-style: none;
-    }
-    .display-list li{
+        position: relative;
         float: left;
+    }
+    .display-list nav ul{
+        position: absolute;
+        bottom: -50px;
+        left: 445px;
+    }
+    .display-list > li{
+        float: left;
+        height: 190px;
         margin-right: 10px;
         margin-bottom: 10px;
         font-size: 16px;
@@ -19,7 +27,7 @@ index page
     }
     .display-list li img{
         width: 250px;
-        height: 200px;
+        height: 150px;
     }
     .display-list li > a{
         display: block;
@@ -31,7 +39,7 @@ index page
 {% end %}
 {% block content %}
 <ul class="display-list">
-    {% set num=0 %}
+    {% set num=(page_num-1)*page_size %}
     {% for post in posts %}
         <li>
             <a href="{{ reverse_url('post', post.id) }}"><img src="{{ static_url(post.image_url) }}" alt=""></a>
@@ -49,5 +57,40 @@ index page
         </li>
         {% set num = num + 1 %}
     {% end %}
+    <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if pg.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="/?page={{ pg.previous_page }}&page_size={{ page_size }}" aria-label="Previous">
+                        <span aria-hidden="true"><i class="iconfont icon-first-blue"></i></span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                        <span aria-hidden="true"><i class="iconfont icon-first-blue"></i></span>
+                    </a>
+                </li>
+                {% end %}
+                {% for n in page_list %}
+                <li class="page-item {% if n == page_num %}active{% end %}">
+                    <a class="page-link" href="/?page={{ n }}&page_size={{ page_size }}">{{ n }}</a>
+                </li>
+                {% end %}
+                {% if pg.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="/?page={{ pg.next_page }}&page_size={{ page_size }}" aria-label="Next">
+                        <span aria-hidden="true"><i class="iconfont icon-fenyezuihouye"></i></span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true"><i class="iconfont icon-fenyezuihouye"></i></span>
+                    </a>
+                </li>
+                {% end %}
+            </ul>
+        </nav>
 </ul>
 {% end %}

@@ -1,5 +1,6 @@
 from hashlib import md5
 from models.auth import User, Post, Session, LikePost
+from sqlalchemy_pagination import paginate
 from sqlalchemy.sql import and_, exists
 
 
@@ -83,6 +84,39 @@ class HandlerORM:
             return posts
         else:
             return []
+
+    def get_pg(self, page=1, page_size=8, username=None):
+        """获取分页对象"""
+        if username:
+            user = self.get_user(username)
+            qs = self.db.query(Post).filter_by(user=user)
+        else:
+            qs = self.db.query(Post)
+        pg = paginate(qs, page, page_size)
+        return pg
+
+    def get_page_list(self, page, page_size):
+        """获取页码列表"""
+        num = 3     # 显示的页数，一定是个奇数
+        pg = self.get_pg(page, page_size)
+        page_num = page         # 当前页码
+        # total_num = pg.total    # 图片总数
+        total_page = pg.pages   # 总共的页数
+        page_list = []
+        if page_num - (num - 1) // 2 <= 0:  # 显示左边的页码以及当前页码
+            for i in range(page_num):
+                page_list.append(i + 1)
+        else:  # 说明当前页码足够大
+            for i in range(page_num - (num - 1) // 2, page_num + 1):
+                page_list.append(i)
+        if page_num + (num - 1) / 2 >= total_page:
+            for i in range(page_num + 1, total_page + 1):
+                page_list.append(i)
+        else:
+            for i in range(page_num + 1, page_num + (num - 1) // 2 + 1):
+                page_list.append(i)
+        return page_list
+
 
     def add_post(self, username, image_url, thumb_url):
         user = self.get_user(username)
