@@ -1,5 +1,6 @@
 import uuid
 import logging
+import redis
 import tornado.web
 import tornado.escape
 from tornado.ioloop import IOLoop
@@ -9,6 +10,7 @@ from datetime import datetime
 from .main import BaseHandler
 
 logger = logging.getLogger('super.log')
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 
 def make_data(handler, body, username):
@@ -25,14 +27,12 @@ def make_data(handler, body, username):
 class ChatRoomHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        return self.render('room.html', history=ChatWSHandler.history)
+        return self.render('room.html', history=reversed(r.lrange('history', 0, 19)))
 
 
 class ChatWSHandler(WebSocketHandler, BaseHandler):
     """处理和响应websocket连接"""
     waiters = set()
-    history = []
-    history_size = 20
 
     def open(self):
         # 新的websocket连接打开，自动调用
@@ -60,11 +60,10 @@ class ChatWSHandler(WebSocketHandler, BaseHandler):
             ChatWSHandler.send_message(chat)
 
     @classmethod
-    def update_history(cls, chat):
+    def update_history(cls, html):
         # 保存最后20条信息
-        cls.history.append(chat)
-        if len(cls.history) > cls.history_size:
-            cls.history = cls.history[-cls.history_size:]
+        # cls.history.append(html)
+        r.lpush('history', html)
 
     @classmethod
     def send_message(cls, chat):

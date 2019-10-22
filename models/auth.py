@@ -12,6 +12,7 @@ class User(Base):
     password = Column(String(50))
     email = Column(String(50))
     create_time = Column(DateTime, default=datetime.now())
+    posts = relationship('Post', back_populates='user')
 
     def __repr__(self):
         return '<User: {}-{}>'.format(self.id, self.name)
@@ -32,7 +33,7 @@ class Post(Base):
     thumb_url = Column(String(200))
     user_id = Column(Integer, ForeignKey('users.id'))
     # backref:使user对象有posts这个属性访问posts表
-    user = relationship('User', backref='posts', uselist=False, cascade='all')
+    user = relationship('User', back_populates='posts', cascade='all')
 
     def __repr__(self):
         return '<Post: {}>'.format(self.id)
